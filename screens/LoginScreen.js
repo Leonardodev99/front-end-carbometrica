@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Button, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
 
+    const navigation = useNavigation();
+
     const handleLogin = () => {
         // Simular um processo de login
         if (email === 'tiago@gmail.com' && password === '1234') {
             setMessage('Login successful!');
+            navigation.navigate('RecipeMenu');
         } else {
             setMessage('Invalid email or password');
         }

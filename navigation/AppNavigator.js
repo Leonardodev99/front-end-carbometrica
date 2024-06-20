@@ -4,6 +4,7 @@ import SplashScreen from '../screens/SplashScreen';
 import MainScreen from '../screens/MainScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import LoginScreen from '../screens/LoginScreen';
+import RecipeMenuScreen from "../screens/RecipeMenuScreen";
 
 const Stack = createStackNavigator();
 
@@ -13,6 +14,7 @@ const AppNavigator = () => {
         <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="Main" component={MainScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="RecipeMenu" component={RecipeMenuScreen} options={{ headerShown: false }}/>
         
         </Stack.Navigator>
     );
