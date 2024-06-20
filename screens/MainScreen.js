@@ -17,7 +17,7 @@ const MainScreen = ({ navigation }) => {
             <View style={[styles.circle, styles.right]}>
                 <Text style={styles.circleText}>Glecemia na meta mesmo comendo o bolo de chocolate?</Text>
             </View>
-            <Button title="BOA! QUERO VER!" onPress={() => navigation.navigate('Register')}/>
+            <Button title="BOA! QUERO VER!" onPress={() => navigation.navigate('Eyes')}/>
             <Text style={styles.texta}>Já usa a CARBO?</Text>
             <Button title="PODE ENTRAR!" onPress={() => navigation.navigate('Login')}/>
 
