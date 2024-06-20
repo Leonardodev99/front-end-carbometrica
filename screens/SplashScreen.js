@@ -30,10 +30,12 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: 'bold',
         color: '#FF4500',
+        marginTop: 10,
     },
     carbometrica: {
         width: 100,
         height: 100,
+        resizeMode: 'contain',
     }
 });
 
