@@ -1,27 +1,33 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, Button, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 
 const MainScreen = ({ navigation }) => {
-    return(
+    return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
             <View style={styles.container}>
                 <Image source={require('../assets/carbometrica.png')}
                     style={styles.carbometrica}
                 />
                 <Text style={styles.text}>Sua receita calculada como magia!</Text>
-                <View style={[styles.circle, styles.left]}>
-                    <Text style={styles.circleText}>Calcular carboidrato daquela receita feita em casa?</Text>
+                <View style={styles.triangleContainer}>
+                    <View style={[styles.circle, styles.topCircle]}>
+                        <Text style={styles.circleText}>Calcular carboidrato daquela receita feita em casa?</Text>
+                    </View>
+                    <View style={[styles.circle, styles.leftCircle]}>
+                        <Text style={styles.circleText}>Ter acesso a receitas com a contagem pronta?</Text>
+                    </View>
+                    <View style={[styles.circle, styles.rightCircle]}>
+                        <Text style={styles.circleText}>Glecemia na meta mesmo comendo o bolo de chocolate?</Text>
+                    </View>
                 </View>
-                <View style={[styles.circle, styles.center]}>
-                    <Text style={styles.circleText}>Ter acesso a receitas com a contagem pronta?</Text>
-                </View>
-                <View style={[styles.circle, styles.right]}>
-                    <Text style={styles.circleText}>Glecemia na meta mesmo comendo o bolo de chocolate?</Text>
-                </View>
-                <Button title="BOA! QUERO VER!" onPress={() => navigation.navigate('Eyes')}/>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Eyes')}>
+                    <Text style={styles.buttonText}>BOA! QUERO VER!</Text>
+                </TouchableOpacity>
                 <Text style={styles.texta}>Já usa a CARBO?</Text>
-                <Button title="PODE ENTRAR!" onPress={() => navigation.navigate('Login')}/>
-                </View>
+                <TouchableOpacity style={[styles.button, styles.lastButton]} onPress={() => navigation.navigate('Login')}>
+                    <Text style={styles.buttonText}>PODE ENTRAR!</Text>
+                </TouchableOpacity>
+            </View>
         </ScrollView>
     );
 };
@@ -35,18 +41,26 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: '#FFFFFF',
-        paddingTop: 50,
+        paddingTop: 30,
     },
     text: {
         fontSize: 12,
         color: '#FF4500',
-        marginTop: 10,
+        marginTop: 5,
         fontWeight: 'bold',
     },
     carbometrica: {
         width: 100,
         height: 100,
         resizeMode: 'contain',
+        marginBottom: 5,
+    },
+    triangleContainer: {
+        width: 300,
+        height: 300,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 30,
     },
     circle: {
         width: 100,
@@ -57,19 +71,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 2,
         borderColor: '#0000FF',
-        marginTop: 10,
+        position: 'absolute',
         padding: 10,
     },
-    left: {
-        alignSelf: 'flex-start',
-        marginLeft: 200,
+    topCircle: {
+        top: 0,
     },
-    center: {
-        alignSelf: 'center',
+    leftCircle: {
+        left: 30,
+        bottom: 50,
     },
-    right: {
-        alignSelf: 'flex-end',
-        marginRight: 200,
+    rightCircle: {
+        right: 30,
+        bottom: 50,
     },
     circleText: {
         fontSize: 12,
@@ -79,11 +93,30 @@ const styles = StyleSheet.create({
     texta: {
         fontSize: 12,
         color: '#FF4500',
-        marginTop: 65,
+        marginTop: 20,  // Ajustado para diminuir a margem superior
         fontWeight: 'bold',
+    },
+    button: {
+        borderWidth: 2,
+        borderColor: '#0000FF',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 5,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginTop: 20,
+    },
+    lastButton: {
+        marginTop: 10,  // Ajustado para subir o último botão
+    },
+    buttonText: {
+        color: '#FF4500',
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
 });
 
 export default MainScreen;
+
+
 
 
