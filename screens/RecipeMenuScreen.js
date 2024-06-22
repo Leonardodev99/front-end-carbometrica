@@ -18,7 +18,7 @@ const RecipeMenuScreen = ({ navigation }) => {
                                 style={styles.image}
                             />
                         </View>
-                        <TouchableOpacity onPress={() => navigation.navigate('StrawberryShake')}>
+                        <TouchableOpacity onPress={() => navigation.navigate('RecipeDetails')}>
                             <Text style={styles.circleText}>Batido de Morango</Text>
                         </TouchableOpacity>
                     </View>
@@ -29,7 +29,7 @@ const RecipeMenuScreen = ({ navigation }) => {
                                 style={styles.image}
                             />
                         </View>
-                        <TouchableOpacity onPress={() => navigation.navigate('ChickenBroccoliPasta')}>
+                        <TouchableOpacity onPress={() => navigation.navigate('RecipeDetails')}>
                             <Text style={styles.circleText}>Macarrão de Franco e Brócolis</Text>
                         </TouchableOpacity>
                     </View>
@@ -40,12 +40,12 @@ const RecipeMenuScreen = ({ navigation }) => {
                                 style={styles.image}
                             />
                         </View>
-                        <TouchableOpacity onPress={() => navigation.navigate('FruitSalad')}>
+                        <TouchableOpacity onPress={() => navigation.navigate('RecipeDetails')}>
                             <Text style={styles.circleText}>Salada de Frutas</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('MoreRecipes')}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AllRecipes')}>
                     <Text style={styles.buttonText}>VER MAIS</Text>
                 </TouchableOpacity>
                 <View style={styles.imageRow}>

@@ -10,7 +10,7 @@ const receitas = [
     { id: '4', nome: 'Caldeirada', carboidrato: '25g' },
 ];
 
-const MyRecipeScreen = () => {
+const AllRecipeScreen = () => {
     const navigation = useNavigation();
 
     const handleReceitaPress = (receita) => {
@@ -122,4 +122,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default MyRecipeScreen;
+export default AllRecipeScreen;

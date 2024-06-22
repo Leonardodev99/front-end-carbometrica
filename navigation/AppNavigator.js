@@ -8,6 +8,7 @@ import RecipeMenuScreen from "../screens/RecipeMenuScreen";
 import MyRecipeScreen from '../screens/MyRecipeScreen';
 import RecipeDetailsScreen from "../screens/RecipeDetailsScreen";
 import CalculatePortionScreen from "../screens/CalculatePortionScreen";
+import AllRecipeScreen from "../screens/AllRecipeScreen";
 
 
 const Stack = createStackNavigator();
@@ -22,6 +23,7 @@ const AppNavigator = () => {
         <Stack.Screen name="MyRecipes" component={MyRecipeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="RecipeDetails" component={RecipeDetailsScreen} options={{ headerShown: false }} />
         <Stack.Screen name="CalculatePortion" component={CalculatePortionScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="AllRecipes" component={AllRecipeScreen} options={{ headerShown: false }} />
         
         </Stack.Navigator>
     );
