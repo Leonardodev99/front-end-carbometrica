@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 
-const RecipeMenuScreen = ({ navigation }) => {
+const RecipeMenuCScreen = ({ navigation }) => {
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
             <View style={styles.container}>
@@ -48,32 +48,15 @@ const RecipeMenuScreen = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                 </View>
+                <Text style={styles.orangeText}>Achou pouco? Acesse a biblioteca</Text>
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AllRecipes')}>
                     <Text style={styles.buttonText}>VER MAIS</Text>
                 </TouchableOpacity>
-                <View style={styles.imageRow}>
-                    <View style={styles.item}>
-                        <View style={styles.circle}>
-                            <Image
-                                source={require('../assets/igredientes.jpg')}
-                                style={styles.image}
-                            />
-                        </View>
-                        <TouchableOpacity onPress={() => navigation.navigate('NewRecipe')}>
-                            <Text style={styles.circleTextBold}>NOVA RECEITA</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.item}>
-                        <View style={styles.circle}>
-                            <Image
-                                source={require('../assets/minhas.jpg')}
-                                style={styles.image}
-                            />
-                        </View>
-                        <TouchableOpacity onPress={() => navigation.navigate('MyRecipes')}>
-                            <Text style={styles.circleTextBold}>MINHAS RECEITAS</Text>
-                        </TouchableOpacity>
-                    </View>
+                <View style={styles.footer}>
+                    <Text style={styles.orangeText1}>Para calcular a sua receita, inscreva-se</Text>
+                    <TouchableOpacity style={styles.createAccountButton} onPress={() => navigation.navigate('CreateAccount')}>
+                        <Text style={styles.createAccountButtonText}>CRIAR CONTA</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </ScrollView>
@@ -147,7 +130,7 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         paddingHorizontal: 30,
         borderRadius: 5,
-        marginTop: 50,
+        marginTop: 10,
     },
     buttonText: {
         color: '#FFFFFF',
@@ -168,7 +151,36 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
+    orangeText: {
+        color: '#FF4500',
+        fontSize: 14,
+        marginTop: 70, // Ajuste a margem superior conforme necessário
+    },
+    footer: {
+        flexDirection: 'column', // Mudado para 'column' para colocar os elementos um abaixo do outro
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        marginTop: 10, // Ajuste a margem superior conforme necessário
+    },
+    orangeText1: {
+        color: '#FF4500',
+        fontSize: 14,
+        marginTop: 30, // Ajuste a margem superior conforme necessário
+    },
+    createAccountButton: {
+        backgroundColor: '#007bff',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+        marginLeft: 10,
+        marginTop: 10, // Espaço entre o texto e o botão
+    },
+    createAccountButtonText: {
+        color: '#FFFFFF',
+        fontSize: 14,
+        fontWeight: 'bold',
+    },
 });
 
-export default RecipeMenuScreen;
-
+export default RecipeMenuCScreen;
