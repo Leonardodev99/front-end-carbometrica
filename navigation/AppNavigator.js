@@ -12,6 +12,7 @@ import NewRecipeScreen from "../screens/NewRecipeScreen";
 import IngredientesScreen from "../screens/Ingredienttable";
 import RecipeMenuCScreen from "../screens/RecipeMenuCScreen";
 import CreateAccountScreen from "../screens/CreateAccountScreen";
+import IngredientsRecipeScreen from "../screens/IngredientsRecipeScreen";
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
@@ -29,6 +30,8 @@ const AppNavigator = () => {
         <Stack.Screen name="IngredientSearch" component={IngredientesScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Eyes" component={RecipeMenuCScreen} options={{ headerShown: false }} />
         <Stack.Screen name="CreateAccount" component={CreateAccountScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Ingredients" component={IngredientsRecipeScreen} options={{ headerShown: false }} />
+
         
         
         
