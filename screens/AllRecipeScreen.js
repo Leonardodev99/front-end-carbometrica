@@ -1,28 +1,53 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
-// Dados fictícios para a tabela
-const receitas = [
-    { id: '1', nome: 'Bolo de Chocolate', carboidrato: '45g' },
-    { id: '2', nome: 'Molho de Calulu', carboidrato: '35g' },
-    { id: '3', nome: 'Pastel de carne', carboidrato: '20g' },
-    { id: '4', nome: 'Caldeirada', carboidrato: '25g' },
-];
+import axios from 'axios'; // Import axios
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Import icon library
 
 const AllRecipeScreen = () => {
+    const [receitas, setReceitas] = useState([]);
     const navigation = useNavigation();
+
+    useEffect(() => {
+        // Fetch recipes from backend
+        const fetchReceitas = async () => {
+            try {
+                const response = await axios.get('http://localhost:3006/receitas');
+                setReceitas(response.data);
+            } catch (error) {
+                console.error('Erro ao buscar receitas:', error);
+                Alert.alert('Erro', 'Erro ao buscar receitas. Tente novamente mais tarde.');
+            }
+        };
+
+        fetchReceitas();
+    }, []);
 
     const handleReceitaPress = (receita) => {
         // Navegar para a tela de detalhes da receita (a ser implementada)
         navigation.navigate('RecipeDetails', { receita });
     };
 
+    const handleRefresh = () => {
+        // Fetch recipes again
+        const fetchReceitas = async () => {
+            try {
+                const response = await axios.get('http://localhost:3006/receitas');
+                setReceitas(response.data);
+            } catch (error) {
+                console.error('Erro ao buscar receitas:', error);
+                Alert.alert('Erro', 'Erro ao buscar receitas. Tente novamente mais tarde.');
+            }
+        };
+
+        fetchReceitas();
+    };
+
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
             <View style={styles.container}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                  <Text style={styles.backButtonText}>Voltar</Text>
+                    <Text style={styles.backButtonText}>Voltar</Text>
                 </TouchableOpacity>
 
                 <Text style={styles.headerText}>BIBLIOTECA DE RECEITAS</Text>
@@ -42,6 +67,9 @@ const AllRecipeScreen = () => {
                         </View>
                     ))}
                 </View>
+                <TouchableOpacity onPress={handleRefresh} style={styles.refreshButton}>
+                    <Icon name="refresh" size={24} color="#fff" />
+                </TouchableOpacity>
             </View>
         </ScrollView>
     );
@@ -66,12 +94,12 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 20, // Posição superior
         left: 20, // Posição esquerda
-      },
-      backButtonText: {
+    },
+    backButtonText: {
         color: '#fff',
         fontWeight: 'bold',
         textAlign: 'center',
-      },
+    },
     headerText: {
         fontSize: 18,
         color: '#FF4500', // Laranja carregado
@@ -120,6 +148,15 @@ const styles = StyleSheet.create({
         color: '#0000FF', // Azul
         textDecorationLine: 'underline',
     },
+    refreshButton: {
+        backgroundColor: '#FF4500', // Laranja
+        padding: 10,
+        borderRadius: 5,
+        position: 'absolute',
+        top: 20, // Posição superior
+        right: 20, // Posição direita
+    },
 });
 
 export default AllRecipeScreen;
+

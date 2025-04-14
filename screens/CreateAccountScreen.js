@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import axios from 'axios';
 
 const CreateAccountScreen = ({ navigation }) => {
-  const [userName, setUserName] = useState('');
+  const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [hasDiabetes, setHasDiabetes] = useState(null);
-  const [caresForDiabetic, setCaresForDiabetic] = useState(null);
-  const [usesCarbCounting, setUsesCarbCounting] = useState(null);
-  const [diabetesType, setDiabetesType] = useState(null);
+  const [temDiabete, setTemDiabete] = useState(null);
+  const [cuidaDiabete, setCuidaDiabete] = useState(null);
+  const [usaAContagem, setUsaAContagem] = useState(null);
+  const [tipoDeDiabete, setTipoDeDiabete] = useState(null);
 
-  const [errors, setErrors] = useState({}); // Estado para gerenciar erros de validação
+  const [errors, setErrors] = useState({}); 
 
-  const handleCreateAccount = () => {
+  const handleCreateAccount = async () => {
     const newErrors = {};
 
-    if (!userName.trim()) {
+    if (!nome.trim()) {
       newErrors.userName = 'Nome de usuário é obrigatório';
-    } else if (!validateUserName(userName)) {
+    } else if (!validateUserName(nome)) {
       newErrors.userName = 'Os dois primeiros caracteres devem ser letras';
     }
 
@@ -40,51 +41,64 @@ const CreateAccountScreen = ({ navigation }) => {
       newErrors.confirmPassword = 'Senhas não coincidem';
     }
 
-    if (hasDiabetes === null) {
-      newErrors.hasDiabetes = 'Selecione uma opção';
+    if (temDiabete === null) {
+      newErrors.temDiabete = 'Selecione uma opção';
     }
 
-    if (caresForDiabetic === null) {
-      newErrors.caresForDiabetic = 'Selecione uma opção';
+    if (cuidaDiabete === null) {
+      newErrors.cuidaDiabete = 'Selecione uma opção';
     }
 
-    if (usesCarbCounting === null) {
-      newErrors.usesCarbCounting = 'Selecione uma opção';
+    if (usaAContagem === null) {
+      newErrors.usaAContagem = 'Selecione uma opção';
     }
 
-    if (diabetesType === null) {
-      newErrors.diabetesType = 'Selecione um tipo';
+    if (tipoDeDiabete === null) {
+      newErrors.tipoDeDiabete = 'Selecione um tipo';
     }
 
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      // Se não houver erros, prossiga com a criação da conta
       console.log('Criando conta com dados:', {
-        userName,
+        nome,
         email,
         password,
         confirmPassword,
-        hasDiabetes,
-        caresForDiabetic,
-        usesCarbCounting,
-        diabetesType,
+        temDiabete,
+        cuidaDiabete,
+        usaAContagem,
+        tipoDeDiabete,
       });
 
-      // Depois de criar a conta chamar 'Main' 
-      navigation.navigate('Main'); //
+      try {
+        const response = await axios.post('http://localhost:3006/users/', {
+          nome,
+          email,
+          password,
+          temDiabete,
+          cuidaDiabete,
+          usaAContagem,
+          tipoDeDiabete,
+        });
+        
+        console.log('Resposta do servidor:', response.data);
+        
+        navigation.navigate('Main');
+      } catch (error) {
+        console.error('Erro ao criar a conta:', error);
+        setErrors({ apiError: 'Ocorreu um erro ao criar a conta. Por favor, tente novamente.' });
+      }
     }
   };
 
   const validateEmail = (email) => {
-    // Expressão regular simples para validação básica de email
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
   };
 
-  const validateUserName = (userName) => {
-    // Verifica se os dois primeiros caracteres são letras
-    return /^[a-zA-Z]{2}/.test(userName);
+  const validateUserName = (nome) => {
+    return /^[a-zA-Z]{2}/.test(nome);
   };
 
   return (
@@ -96,13 +110,15 @@ const CreateAccountScreen = ({ navigation }) => {
 
         <Text style={styles.title}>Criar Conta</Text>
 
+        {errors.apiError && <Text style={styles.errorText}>{errors.apiError}</Text>}
+
         <TextInput
-          style={[styles.input, errors.userName && styles.inputError]}
+          style={[styles.input, errors.nome && styles.inputError]}
           placeholder="Nome de usuário"
-          onChangeText={setUserName}
-          value={userName}
+          onChangeText={setNome}
+          value={nome}
         />
-        {errors.userName && <Text style={styles.errorText}>{errors.userName}</Text>}
+        {errors.nome && <Text style={styles.errorText}>{errors.nome}</Text>}
 
         <TextInput
           style={[styles.input, errors.email && styles.inputError]}
@@ -138,38 +154,38 @@ const CreateAccountScreen = ({ navigation }) => {
             <Text style={styles.questionText}>Você tem diabetes?</Text>
             <View style={styles.options}>
               <TouchableOpacity
-                style={[styles.optionButton, hasDiabetes === true && styles.selectedOption]}
-                onPress={() => setHasDiabetes(true)}
+                style={[styles.optionButton, temDiabete === "sim" && styles.selectedOption]}
+                onPress={() => setTemDiabete("sim")}
               >
                 <Text style={styles.optionButtonText}>Sim</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.optionButton, hasDiabetes === false && styles.selectedOption]}
-                onPress={() => setHasDiabetes(false)}
+                style={[styles.optionButton, temDiabete === "não" && styles.selectedOption]}
+                onPress={() => setTemDiabete("não")}
               >
                 <Text style={styles.optionButtonText}>Não</Text>
               </TouchableOpacity>
             </View>
-            {errors.hasDiabetes && <Text style={styles.errorText}>{errors.hasDiabetes}</Text>}
+            {errors.temDiabete && <Text style={styles.errorText}>{errors.temDiabete}</Text>}
           </View>
 
           <View style={styles.question}>
             <Text style={styles.questionText}>Cuida de alguém que tem diabetes?</Text>
             <View style={styles.options}>
               <TouchableOpacity
-                style={[styles.optionButton, caresForDiabetic === true && styles.selectedOption]}
-                onPress={() => setCaresForDiabetic(true)}
+                style={[styles.optionButton, cuidaDiabete === "sim" && styles.selectedOption]}
+                onPress={() => setCuidaDiabete("sim")}
               >
                 <Text style={styles.optionButtonText}>Sim</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.optionButton, caresForDiabetic === false && styles.selectedOption]}
-                onPress={() => setCaresForDiabetic(false)}
+                style={[styles.optionButton, cuidaDiabete === "não" && styles.selectedOption]}
+                onPress={() => setCuidaDiabete("não")}
               >
                 <Text style={styles.optionButtonText}>Não</Text>
               </TouchableOpacity>
             </View>
-            {errors.caresForDiabetic && <Text style={styles.errorText}>{errors.caresForDiabetic}</Text>}
+            {errors.cuidaDiabete && <Text style={styles.errorText}>{errors.cuidaDiabete}</Text>}
           </View>
         </View>
 
@@ -178,44 +194,44 @@ const CreateAccountScreen = ({ navigation }) => {
             <Text style={styles.questionText}>Usa a contagem de carboidrato com terapia nutricional?</Text>
             <View style={styles.options}>
               <TouchableOpacity
-                style={[styles.optionButton, usesCarbCounting === true && styles.selectedOption]}
-                onPress={() => setUsesCarbCounting(true)}
+                style={[styles.optionButton, usaAContagem === "sim" && styles.selectedOption]}
+                onPress={() => setUsaAContagem("sim")}
               >
                 <Text style={styles.optionButtonText}>Sim</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.optionButton, usesCarbCounting === false && styles.selectedOption]}
-                onPress={() => setUsesCarbCounting(false)}
+                style={[styles.optionButton, usaAContagem === "não" && styles.selectedOption]}
+                onPress={() => setUsaAContagem("não")}
               >
                 <Text style={styles.optionButtonText}>Não</Text>
               </TouchableOpacity>
             </View>
-            {errors.usesCarbCounting && <Text style={styles.errorText}>{errors.usesCarbCounting}</Text>}
+            {errors.usaAContagem && <Text style={styles.errorText}>{errors.usaAContagem}</Text>}
           </View>
 
           <View style={styles.question}>
             <Text style={styles.questionText}>Qual é o tipo de diabetes?</Text>
             <View style={styles.options}>
               <TouchableOpacity
-                style={[styles.optionButton, diabetesType === 0 && styles.selectedOption]}
-                onPress={() => setDiabetesType(0)}
+                style={[styles.optionButton, tipoDeDiabete === 0 && styles.selectedOption]}
+                onPress={() => setTipoDeDiabete(0)}
               >
                 <Text style={styles.optionButtonText}>0</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.optionButton, diabetesType === 1 && styles.selectedOption]}
-                onPress={() => setDiabetesType(1)}
+                style={[styles.optionButton, tipoDeDiabete === 1 && styles.selectedOption]}
+                onPress={() => setTipoDeDiabete(1)}
               >
                 <Text style={styles.optionButtonText}>1</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.optionButton, diabetesType === 2 && styles.selectedOption]}
-                onPress={() => setDiabetesType(2)}
+                style={[styles.optionButton, tipoDeDiabete === 2 && styles.selectedOption]}
+                onPress={() => setTipoDeDiabete(2)}
               >
                 <Text style={styles.optionButtonText}>2</Text>
               </TouchableOpacity>
             </View>
-            {errors.diabetesType && <Text style={styles.errorText}>{errors.diabetesType}</Text>}
+            {errors.tipoDeDiabete && <Text style={styles.errorText}>{errors.tipoDeDiabete}</Text>}
           </View>
         </View>
 
@@ -234,7 +250,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#FFFFFF', // Fundo branco
+    backgroundColor: '#FFFFFF', 
   },
   title: {
     fontSize: 24,
@@ -249,7 +265,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   inputError: {
-    borderColor: 'red', // Cor da borda para erro
+    borderColor: 'red', 
   },
   subtitle: {
     fontSize: 18,
@@ -263,7 +279,7 @@ const styles = StyleSheet.create({
   questionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 15, // Espaço entre as linhas de questões
+    marginBottom: 15, 
   },
   questionText: {
     fontSize: 16,
@@ -281,14 +297,14 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   selectedOption: {
-    backgroundColor: '#FF4500', // Cor laranja
+    backgroundColor: '#FF4500', 
   },
   optionButtonText: {
     color: '#333',
     textAlign: 'center',
   },
   createButton: {
-    backgroundColor: '#FF4500', // Cor laranja
+    backgroundColor: '#FF4500', 
     padding: 15,
     borderRadius: 5,
     marginTop: 20,
@@ -303,7 +319,7 @@ const styles = StyleSheet.create({
     color: 'red',
     marginBottom: 10,
   },
-  logoutButton: { // Estilos para o botão "Sair"
+  logoutButton: { 
     position: 'absolute',
     top: 10,
     right: 10,

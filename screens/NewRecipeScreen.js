@@ -1,6 +1,10 @@
+// NewRecipeScreen.js
+
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios'; // Import axios
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NewRecipeScreen = () => {
   const [nome, setNome] = useState('');
@@ -11,20 +15,55 @@ const NewRecipeScreen = () => {
   const [modoPreparo, setModoPreparo] = useState('');
   const navigation = useNavigation();
 
-  const handleSave = () => {
+  const getToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      return token;
+    } catch (error) {
+      console.error('Erro ao obter token:', error);
+      return null;
+    }
+  };
+
+  const handleSave = async () => {
     // Validação dos campos
     if (nome.trim() === '' || modoPreparo.trim() === '' || ingredientes.some(ingrediente => ingrediente.nome.trim() === '' || ingrediente.quantidade.trim() === '' || ingrediente.carboidrato.trim() === '')) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
 
-    // Lógica para salvar a receita (implemente aqui)
+    try {
 
-    // Mensagem de sucesso
-    Alert.alert('Sucesso', 'Receita cadastrada com sucesso!');
+      const token = await getToken();
+    if (!token) {
+      Alert.alert('Erro', 'Você precisa fazer login para cadastrar receitas.');
+      return;
+    }
+      const response = await axios.post('http://localhost:3006/receitas', {
+        nome,
+        carboidrato,
+        ingredientes,
+        modoPreparo,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+  
+    
+    );
 
-    // Navegar de volta para a tela principal de receitas
-    navigation.navigate('RecipeMenu');
+      if (response.status === 201) {
+        Alert.alert('Sucesso', 'Receita cadastrada com sucesso!');
+        navigation.navigate('RecipeMenu'); // Navegar de volta para a tela principal de receitas
+      } else {
+        Alert.alert('Erro', 'Erro ao cadastrar receita.');
+      }
+    } catch (error) {
+      console.error('Erro ao cadastrar receita:', error);
+      Alert.alert('Erro', 'Erro ao cadastrar receita. Tente novamente mais tarde.');
+    }
   };
 
   const addIngredient = () => {
